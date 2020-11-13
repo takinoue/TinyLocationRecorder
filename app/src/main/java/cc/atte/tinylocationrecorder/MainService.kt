@@ -10,7 +10,6 @@ import android.net.Uri
 import android.os.IBinder
 import android.provider.Settings
 import android.util.Log
-import androidx.activity.viewModels
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.google.android.gms.location.*
