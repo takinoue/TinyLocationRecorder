@@ -51,10 +51,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.shareRecord.setOnClickListener {
             val recordLine = recordData.map {
-                "0:%.6f,%.6f,%.3f,ts=%.3f"
+                "0:%.6f,%.6f,%.3f,ts=%.3f\n"
                     .format(it.longitude, it.latitude, it.altitude, it.timestamp)
             }
-            val recordText = recordLine.joinToString("\n")
+            val recordText = recordLine.reversed().joinToString("")
             val sendIntent = Intent(Intent.ACTION_SEND)
             sendIntent.type = "text/plain"
             sendIntent.putExtra(Intent.EXTRA_TEXT, recordText)
