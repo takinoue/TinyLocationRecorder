@@ -9,7 +9,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.IBinder
 import android.provider.Settings
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.google.android.gms.location.*
@@ -25,6 +24,8 @@ class MainService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        val app = application as MainApplication
+        app.putServiceRunning(true)
         fusedClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
@@ -36,8 +37,6 @@ class MainService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val app = application as MainApplication
-        app.putServiceRunning(true)
-
         recordTiming = app.getRecordTiming()
         locationRequest = createLocationRequest()
         locationCallback = createLocationCallback()
@@ -80,7 +79,7 @@ class MainService : Service() {
         val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_my_notification)
             .setContentTitle("Recording location")
-            .setContentText("Tap to check log messages")
+            .setContentText("Tap to check list of records")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(openIntent)
             .setAutoCancel(true)
@@ -113,11 +112,10 @@ class MainService : Service() {
         override fun onLocationResult(locationResult: LocationResult?) {
             locationResult ?: return
             for (location in locationResult.locations) {
-                val newId = RecordModel.append(
+                RecordModel.append(
                     location.time / 1000.0,
                     location.longitude, location.latitude, location.altitude
                 )
-                Log.d("TLR", "newId:$newId")
             }
         }
     }

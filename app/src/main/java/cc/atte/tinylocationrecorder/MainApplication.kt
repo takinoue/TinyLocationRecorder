@@ -18,7 +18,7 @@ class MainApplication : Application() {
         PreferenceManager.getDefaultSharedPreferences(this)
 
     fun getRecordTiming(): Int =
-        getPreference().getInt(settingRecordTiming, 10)
+        getPreference().getInt(settingRecordTiming, 15)
 
     fun putRecordTiming(value: Int): Unit =
         getPreference().edit().putInt(settingRecordTiming, value).apply()
